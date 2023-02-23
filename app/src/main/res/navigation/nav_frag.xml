@@ -9,7 +9,11 @@
         android:id="@+id/maps"
         android:name="com.example.map_test1.view.MapsFragment"
         android:label="@string/current_year"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_maps_to_chartFragment"
+            app:destination="@id/chartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/info"
         android:name="com.example.map_test1.view.InfoFragment"
@@ -24,4 +28,9 @@
             android:id="@+id/action_year_to_maps"
             app:destination="@id/maps" />
     </fragment>
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.example.map_test1.view.ChartFragment"
+        android:label="fragment_chart"
+        tools:layout="@layout/fragment_chart" />
 </navigation>

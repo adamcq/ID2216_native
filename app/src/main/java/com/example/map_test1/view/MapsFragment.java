@@ -3,22 +3,21 @@ package com.example.map_test1.view;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.map_test1.MapsActivity;
 import com.example.map_test1.R;
+import com.example.map_test1.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.data.geojson.GeoJsonFeature;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
@@ -34,7 +33,7 @@ public class MapsFragment extends Fragment {
     final private int[] CRIME_LEVEL_COLORS = new int[]{0x7799FF33, 0x77FFFF33, 0x77FF9900, 0x77FF0000};
     private final static String mLogTag = "MapsFragment";
 //    private int currentYear = 2022;
-    Context thisContext;
+    private View v;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -64,9 +63,8 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // store the context
-        thisContext = container.getContext();
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        v = inflater.inflate(R.layout.fragment_maps, container, false);
+        return v;
     }
 
     @Override
@@ -82,9 +80,9 @@ public class MapsFragment extends Fragment {
     }
 
     private void retrieveFileFromResource() {
-        Log.v("retrieved map for ", Integer.toString(MapsActivity.getCurrentYear()));
+        Log.v("retrieved map for ", Integer.toString(Utils.getCurrentYear()));
         try {
-            GeoJsonLayer layer = new GeoJsonLayer(getMap(), R.raw.neighbourhoods, thisContext);
+            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.neighbourhoods, getContext());
             addGeoJsonLayerToMap(layer);
         } catch (IOException e) {
             Log.e(mLogTag, "GeoJSON file could not be read");
@@ -93,45 +91,56 @@ public class MapsFragment extends Fragment {
         }
     }
     private void addGeoJsonLayerToMap(GeoJsonLayer layer) {
-
         setPolygonStyle(layer);
         layer.addLayerToMap();
         // Demonstrate receiving features via GeoJsonLayer clicks.
-        // TODO change to our click listener
-//        layer.setOnFeatureClickListener(new GeoJsonLayer.GeoJsonOnFeatureClickListener() {
-//            @Override
-//            public void onFeatureClick(Feature feature) {
-//                Toast.makeText(MapsActivity.this,
-//                        "Feature clicked: " + feature.getProperty("title"),
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
+        // TODO change fragment to ShowData onClick
+        layer.setOnFeatureClickListener(feature -> {
+                Utils.setCurrentDistrict(feature.getProperty("neighbourhood"));
+                Navigation.findNavController(v).navigate(R.id.action_maps_to_chartFragment);
+        });
+//                Toast.makeText(thisContext,
+//                "Feature clicked: " + feature.getProperty("neighbourhood"),
+//                Toast.LENGTH_SHORT).show());
     }
 
     private void setPolygonStyle(GeoJsonLayer layer) {
         // Iterate over all the features stored in the layer
         for (GeoJsonFeature feature : layer.getFeatures()) {
             // get and set color for district for year-district pair
-            int districtIndex = getDistrictIndexByName(feature.getProperty("neighbourhood"));
             GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-//            int crimeCount = getCrimeCount(getYearIndexByYear(MapsActivity.getCurrentYear()), districtIndex);
-            int crimeCount = MapsActivity.getCrimeCounts()[MapsActivity.getCurrentYear()-MapsActivity.getYears()[0]][districtIndex];
+            int districtIndex = Utils.districtToIndex.get(feature.getProperty("neighbourhood"));
+            int crimeCount = getCrimeCount(getYearIndexByYear(Utils.getCurrentYear()), districtIndex);
             int color = getColorByCrimeCount(crimeCount);
-            Log.v("crimeCountInfo", MapsActivity.getCurrentYear() + " " + MapsActivity.getDistricts()[districtIndex] + " " + crimeCount + feature.getProperty("neighbourhood"));
+
+            Log.v("crimeCountInfo", Utils.getCurrentYear() + " " + Utils.getDistricts()[districtIndex] + " " + crimeCount + feature.getProperty("neighbourhood"));
+
             polygonStyle.setFillColor(color);
             polygonStyle.setStrokeWidth(2);
             feature.setPolygonStyle(polygonStyle);
         }
     }
 
+    /**
+     * @param y year index
+     * @param d district index
+     * @return crime count for given year-district pair based on data
+     */
+    private static int getCrimeCount(int y, int d) {
+        int crimeCount = 0;
+        for (int c = 0; c < Utils.getCrimes().length; c++) {
+            crimeCount += Utils.getData()[d][y][c];
+        }
+        return crimeCount;
+    }
+
     private int getDistrictIndexByName(String name) {
-        String[] districts = MapsActivity.getDistricts();
+        String[] districts = Utils.getDistricts();
         for (int i = 0; i < districts.length; i++) {
             if (Objects.equals(districts[i], name))
                 return i;
         }
-        return 0;
+        return -1;
     }
 
     /**
@@ -148,10 +157,6 @@ public class MapsFragment extends Fragment {
         } else {
             return CRIME_LEVEL_COLORS[3];
         }
-    }
-
-    protected GoogleMap getMap() {
-        return mMap;
     }
 
     public int getYearIndexByYear(int year) {
