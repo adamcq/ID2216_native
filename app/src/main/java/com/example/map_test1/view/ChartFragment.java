@@ -4,12 +4,17 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.map_test1.R;
 import com.example.map_test1.Utils;
@@ -29,11 +34,6 @@ import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
 
     // variable for our bar chart
@@ -45,52 +45,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     // variable for our bar data set.
     BarDataSet barDataSet;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ChartFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChartFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChartFragment newInstance(String param1, String param2) {
-        ChartFragment fragment = new ChartFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("ChartFragment", "onpause");
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,8 +52,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         Log.d("ChartFragment", "oncrtview");
         View v =  inflater.inflate(R.layout.fragment_chart, container, false);
 
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_chart);
+        super.onCreate(savedInstanceState);
 
         // initializing variable for bar chart.
         barChart = v.findViewById(R.id.idBarChart);
@@ -121,9 +74,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // setting text color.
         barDataSet.setValueTextColor(Color.BLACK);
 
-
         // setting text size
-        barDataSet.setValueTextSize(20f);
+        barDataSet.setValueTextSize(16f);
         barChart.getDescription().setEnabled(false);
 
         /* MY CHANGES START */
@@ -134,9 +86,19 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         mv.setChartView(barChart); // For bounds control
         barChart.setMarker(mv); // Set the marker to the chart
 
-
-
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("info", "view created");
+
+        ImageView refresh = view.findViewById(R.id.refresh_btn);
+        refresh.setOnClickListener(btn ->  {
+            Log.d("info", "btn clicked");
+            Navigation.findNavController(view).navigate(R.id.action_chartFragment_self);
+        });
     }
 
     private final RectF onValueSelectedRectF = new RectF();

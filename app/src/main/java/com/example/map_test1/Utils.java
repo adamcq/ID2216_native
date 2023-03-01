@@ -5,9 +5,14 @@ import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.map_test1.view.ChartFragment;
 import com.example.map_test1.view.CrimeDialogFragment;
 import com.example.map_test1.view.InfoDialogFragment;
 import com.example.map_test1.view.MapsFragment;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import java.util.ArrayList;
@@ -272,5 +277,34 @@ public class Utils {
 
     public static void updateChart() {
         // TODO
+    }
+
+    // CHART CONFIG
+    private BarChart barChart;
+    private BarData barData;
+    private BarDataSet barDataSet;
+
+    public BarChart getBarChart() {
+        return barChart;
+    }
+
+    public void setBarChart(BarChart barChart) {
+        this.barChart = barChart;
+    }
+
+    public BarData getBarData() {
+        return barData;
+    }
+
+    public void setBarData(BarData barData) {
+        this.barData = barData;
+    }
+
+    public BarDataSet getBarDataSet() {
+        return barDataSet;
+    }
+
+    public void setBarDataSet(BarDataSet barDataSet) {
+        this.barDataSet = barDataSet;
     }
 }

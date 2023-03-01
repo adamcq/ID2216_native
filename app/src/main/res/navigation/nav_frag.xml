@@ -23,14 +23,23 @@
         android:id="@+id/year"
         android:name="com.example.map_test1.view.YearDialogFragment"
         android:label="Select Year"
-        tools:layout="@layout/fragment_year" >
-        <action
-            android:id="@+id/action_year_to_maps"
-            app:destination="@id/maps" />
-    </fragment>
+        tools:layout="@layout/fragment_year" />
     <fragment
         android:id="@+id/chartFragment"
         android:name="com.example.map_test1.view.ChartFragment"
         android:label="fragment_chart"
-        tools:layout="@layout/fragment_chart" />
+        tools:layout="@layout/fragment_chart" >
+        <action
+            android:id="@+id/action_chartFragment_self"
+            app:destination="@id/chartFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/crimeDialogFragment"
+        android:name="com.example.map_test1.view.CrimeDialogFragment"
+        android:label="fragment_crime_dialog"
+        tools:layout="@layout/fragment_crime_dialog" >
+        <action
+            android:id="@+id/action_crimeDialogFragment_to_chartFragment2"
+            app:destination="@id/chartFragment" />
+    </dialog>
 </navigation>
