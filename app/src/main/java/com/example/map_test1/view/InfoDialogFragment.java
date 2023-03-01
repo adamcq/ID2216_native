@@ -6,21 +6,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.NumberPicker;
 
 import com.example.map_test1.R;
-import com.example.map_test1.Utils;
 import com.example.map_test1.databinding.FragmentInfoBinding;
-import com.example.map_test1.databinding.FragmentYearBinding;
 
-public class InfoFragment extends DialogFragment {
+public class InfoDialogFragment extends DialogFragment {
      FragmentInfoBinding binding;
 
     @Override

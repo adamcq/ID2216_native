@@ -6,7 +6,7 @@
     android:id="@+id/info_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.InfoFragment"
+    tools:context=".view.InfoDialogFragment"
     android:layout_gravity="center_horizontal|center_vertical"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"

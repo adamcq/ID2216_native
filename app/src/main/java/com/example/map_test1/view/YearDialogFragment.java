@@ -1,7 +1,5 @@
 package com.example.map_test1.view;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,15 +12,12 @@ import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.example.map_test1.R;
 import com.example.map_test1.Utils;
 import com.example.map_test1.databinding.FragmentYearBinding;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-public class YearFragment extends DialogFragment {
+public class YearDialogFragment extends DialogFragment {
 
     private int latestNumPickerYear;
     FragmentYearBinding binding;

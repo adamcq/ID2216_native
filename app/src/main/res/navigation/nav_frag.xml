@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/info"
-        android:name="com.example.map_test1.view.InfoFragment"
+        android:name="com.example.map_test1.view.InfoDialogFragment"
         android:label="Color Info"
         tools:layout="@layout/fragment_info" />
     <fragment
         android:id="@+id/year"
-        android:name="com.example.map_test1.view.YearFragment"
+        android:name="com.example.map_test1.view.YearDialogFragment"
         android:label="Select Year"
         tools:layout="@layout/fragment_year" >
         <action

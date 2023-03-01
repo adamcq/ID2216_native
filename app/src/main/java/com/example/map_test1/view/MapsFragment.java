@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,27 +63,19 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Log.d("lifecycle", "onCreateView MapsFragment" + savedInstanceState);
         v = inflater.inflate(R.layout.fragment_maps, container, false);
-        Button button = (Button) v.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Utils.setCurrentYear((Utils.getCurrentYear() + 2) % 8 + 2015);
-                Log.d("info", "TOGGLETHEFT Btn Clicked, year changed to " + Utils.getCurrentYear());
-                setPolygonStyle(Utils.getLayer());
-            }
-        });
         return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d("lifecycle", "onViewCreated MapsFragment");
         super.onViewCreated(view, savedInstanceState);
 
+        initMap();
+        setupView(view);
+    }
+
+    private void initMap() {
         if (mMap == null) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             SupportMapFragment mapFragment =
@@ -93,44 +86,20 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("lifecycle", "onStart MapsFragment");
-    }
-    @Override
-    public void onCreate(Bundle savedInstances) {
-        super.onCreate(savedInstances);
-        Log.d("lifecycle", "onCreate MapsFragment");
-    }
+    @SuppressLint("SetTextI18n")
+    private void setupView(View view) {
+        Utils.updateCrimeCounts();
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("lifecycle", "onDestroy MapsFragment");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("lifecycle", "onResume MapsFragment");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-//        Utils.getLayer().removeLayerFromMap();
-        Log.d("lifecycle", "onStop MapsFragment");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("lifecycle", "onPause MapsFragment");
+        Button button = view.findViewById(R.id.button);
+        button.setText(Integer.toString(Utils.getCurrentYear()));
+        button.setOnClickListener(v -> {
+            Utils.setCurrentYear((Utils.getCurrentYear() + 2) % 8 + 2015);
+            button.setText(Integer.toString(Utils.getCurrentYear()));
+            Utils.updateMap();
+        });
     }
 
     private void retrieveFileFromResource() {
-        Log.d("info", "retrieved map for " + Utils.getCurrentYear());
         try {
             GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.neighbourhoods, getContext());
             Utils.setLayer(layer);
@@ -148,21 +117,16 @@ public class MapsFragment extends Fragment {
                 Utils.setCurrentDistrict(feature.getProperty("neighbourhood"));
                 Navigation.findNavController(v).navigate(R.id.action_maps_to_chartFragment);
         });
-//                Toast.makeText(thisContext,
-//                "Feature clicked: " + feature.getProperty("neighbourhood"),
-//                Toast.LENGTH_SHORT).show());
     }
 
     public void setPolygonStyle(GeoJsonLayer layer) {
-        // Iterate over all the features stored in the layer
+        int[] crimeCounts = Utils.getCrimeCounts();
         for (GeoJsonFeature feature : layer.getFeatures()) {
+
             // get and set color for district for year-district pair
             GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-            int districtIndex = Utils.districtToIndex.get(feature.getProperty("neighbourhood"));
-            int crimeCount = getCrimeCount(getYearIndexByYear(Utils.getCurrentYear()), districtIndex);
-            int color = getColorByCrimeCount(crimeCount);
-
-//            Log.v("crimeCountInfo", Utils.getCurrentYear() + " " + Utils.getDistricts()[districtIndex] + " " + crimeCount + feature.getProperty("neighbourhood"));
+            int d = Utils.districtToIndex.get(feature.getProperty("neighbourhood"));
+            int color = getColorByCrimeCount(crimeCounts[d]);
 
             polygonStyle.setFillColor(color);
             polygonStyle.setStrokeWidth(2);
@@ -184,25 +148,16 @@ public class MapsFragment extends Fragment {
         return crimeCount;
     }
 
-    private int getDistrictIndexByName(String name) {
-        String[] districts = Utils.getDistricts();
-        for (int i = 0; i < districts.length; i++) {
-            if (Objects.equals(districts[i], name))
-                return i;
-        }
-        return -1;
-    }
-
     /**
      * @param crimeCount the amount of crimes
      * @return color based on crimeCount (the bigger the more red)
      */
     private int getColorByCrimeCount(int crimeCount) {
-        if (crimeCount < 2500) {
+        if (crimeCount < Utils.getMaxCrimeCount() / 4) {
             return CRIME_LEVEL_COLORS[0];
-        } else if (crimeCount < 5000) {
+        } else if (crimeCount < Utils.getMaxCrimeCount() / 2) {
             return CRIME_LEVEL_COLORS[1];
-        } else if (crimeCount < 7500) {
+        } else if (crimeCount < 0.75 * Utils.getMaxCrimeCount()) {
             return CRIME_LEVEL_COLORS[2];
         } else {
             return CRIME_LEVEL_COLORS[3];

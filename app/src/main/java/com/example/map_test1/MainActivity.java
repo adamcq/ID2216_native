@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import com.example.map_test1.databinding.ActivityMainBinding;
 import com.example.map_test1.view.CrimeDialogFragment;
-import com.example.map_test1.view.InfoFragment;
-import com.example.map_test1.view.YearFragment;
+import com.example.map_test1.view.InfoDialogFragment;
+import com.example.map_test1.view.YearDialogFragment;
 
 public class MainActivity extends FragmentActivity {
 
@@ -31,74 +31,43 @@ public class MainActivity extends FragmentActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // set starting year
-        Utils.setCurrentYear(2021);
-        Log.v("setValues", "all values set");
+        initMappings();
+        initAnimations();
+        setOnClickListeners();
+    }
 
+    private void initMappings() {
         // create district to index mapping
-        for (int d = 0; d < Utils.getDistricts().length; d++) {
+        for (int d = 0; d < Utils.getDistricts().length; d++)
             Utils.districtToIndex.put(Utils.getDistricts()[d], d);
-        }
+    }
 
-        // initialize values in crimeList (in crimeDialogFragment)
-
-
+    private void initAnimations() {
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
         rotateClose = AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim);
         fromBottom = AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim);
         toBottom = AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim);
+    }
 
+    private void setOnClickListeners() {
         binding.optionsBtn.setOnClickListener(view -> onAnyButtonClicked());
         binding.crimeBtn.setOnClickListener(view ->
-                {
-                    onAnyButtonClicked();
-                    Toast.makeText(this, "CrimeBtn clicked", Toast.LENGTH_SHORT).show();
-                    DialogFragment crimeFragment = new CrimeDialogFragment();
-                    crimeFragment.show(getSupportFragmentManager(),"showCrimeFragment");
-                });
+        {
+            onAnyButtonClicked();
+            DialogFragment crimeFragment = new CrimeDialogFragment();
+            crimeFragment.show(getSupportFragmentManager(),"showCrimeFragment");
+        });
         binding.infoBtn.setOnClickListener(view ->  {
             onAnyButtonClicked();
-            DialogFragment infoFragment = new InfoFragment();
+            DialogFragment infoFragment = new InfoDialogFragment();
             infoFragment.show(getSupportFragmentManager(), "showInfoFragment");
-            Toast.makeText(this, "InfoBtn clicked", Toast.LENGTH_SHORT).show();
         });
         binding.yearBtn.setOnClickListener(view ->
-                {
-                    onAnyButtonClicked();
-                    DialogFragment yearFragment = new YearFragment();
-                    yearFragment.show(getSupportFragmentManager(),"showYearFragment");
-                });
-//    ------------------------- OLD VERSION -------------------------
-//        // menu layout
-//        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-//        ImageView imgMenu = findViewById(R.id.imgMenu);
-//        NavigationView navView = findViewById(R.id.navDrawer);
-//
-//        navView.setItemIconTintList(null);
-//        imgMenu.setOnClickListener( new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    drawerLayout.openDrawer(GravityCompat.START);
-//                }
-//            }
-//        );
-//
-//        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
-//        NavigationUI.setupWithNavController(navView,navController);
-//
-//        TextView textTitle = findViewById(R.id.title);
-//        navController.addOnDestinationChangedListener(
-//                (controller, destination, arguments) -> {
-//                    Log.v("dstID","currentYear: " + Utils.getCurrentYear() + " mapsId: " + Integer.toString(R.id.maps) +  " dst ID: " + Integer.toString(destination.getId()) + " end");
-//                    if (destination.getId() == R.id.maps) {
-//                        destination.setLabel(Integer.toString(Utils.getCurrentYear()));
-//                        Log.d("dstInfo", "maps!!");
-//                    }
-//                    else if (destination.getId() == R.id.chartFragment) {
-//                        destination.setLabel(Utils.getCurrentDistrict() + " in " + Utils.getCurrentYear());
-//                    }
-//                    textTitle.setText(destination.getLabel());
-//                });
+        {
+            onAnyButtonClicked();
+            DialogFragment yearFragment = new YearDialogFragment();
+            yearFragment.show(getSupportFragmentManager(),"showYearFragment");
+        });
     }
 
     private void onAnyButtonClicked() {

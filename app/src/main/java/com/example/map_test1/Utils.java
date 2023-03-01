@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Utils {
-    private static int currentYear;
+    private static int currentYear = 2022;
     private static String currentDistrict;
     public static Map<String, Integer> districtToIndex = new HashMap<String, Integer>();
     private final static int[] years = new int[]{2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022};
@@ -179,6 +179,31 @@ public class Utils {
     private static boolean[] currentCrimes = new boolean[] {
             true, true, true, true, true, true, true, true, true, true, true, true
     };
+
+    private static int maxCrimeCount;
+    public static int getMaxCrimeCount() {
+        return maxCrimeCount;
+    }
+
+    private static int[] crimeCounts;
+    public static int[] getCrimeCounts() {
+        return crimeCounts;
+    }
+    public static void updateCrimeCounts() {
+        crimeCounts = new int[districts.length];
+        maxCrimeCount = 0;
+        for (int d = 0; d < districts.length; d++) {
+            int crimeCount = 0;
+            for (int c = 0; c < crimes.length; c++)
+                if (currentCrimes[c])
+                    crimeCount += data[d][getCurrentYearIndex()][c];
+            crimeCounts[d] = crimeCount; // update crime count
+
+            if (crimeCounts[d] > maxCrimeCount) // update max crime count
+                maxCrimeCount = crimeCounts[d];
+        }
+    }
+
     public static boolean[] getCurrentCrimes() {
         return currentCrimes;
     }

@@ -26,15 +26,6 @@
             android:orientation="horizontal"
             android:id="@+id/title_layout">
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/back_button_crime_dialog"
-                android:layout_alignParentStart="true"
-                android:backgroundTint="#00FFFFFF"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_back" />
-
             <TextView
                 android:id="@+id/select_crimes_title"
                 style="@style/TextAppearance.AppCompat.Title"
@@ -50,8 +41,19 @@
             android:id="@+id/crime_selection_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/confirm_crime_selection_btn"
             android:layout_below="@+id/title_layout"
             android:backgroundTint="@color/white" />
+
+        <Button
+            android:id="@+id/confirm_crime_selection_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="@string/confirm" />
 
     </RelativeLayout>
 

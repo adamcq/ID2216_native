@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CrimeDialogFragment extends DialogFragment {
-    ArrayList selectedItems;
     FragmentCrimeDialogBinding binding;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
@@ -68,47 +67,12 @@ public class CrimeDialogFragment extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        Log.d("CrimeDialogFragment", "dismissed");
+        Utils.updateCrimeCounts();
+        Utils.updateMap();
+        Utils.updateChart();
     }
 
     public void setOnClickListeners() {
-        binding.backButtonCrimeDialog.setOnClickListener(btn ->  {
-            Utils.updateMap();
-            Utils.updateChart();
-            dismiss();
-        });
+        binding.confirmCrimeSelectionBtn.setOnClickListener(btn -> dismiss());
     }
-
-    //    ---------------- WORKING VERSION BUT UGLY -----------------
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        selectedItems = new ArrayList();  // Where we track the selected items
-//        boolean[] currentSession = Arrays.copyOf(Utils.getCurrentCrimes(), Utils.getCurrentCrimes().length);
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        // Set the dialog title
-//        builder.setTitle(R.string.pick_crimes)
-//                // Specify the list array, the items to be selected by default (null for none),
-//                // and the listener through which to receive callbacks when items are selected
-//                .setMultiChoiceItems(R.array.crimeChoicesArray, currentSession,
-//                        (dialog, item, isChecked) -> {
-//                            Log.d("item", "current crimes = " + Arrays.toString(Utils.getCurrentCrimes()));
-//                            Log.d("item", "selected items = " + Arrays.toString(selectedItems.toArray()));
-//                            if (isChecked) {
-//                                // If the user checked the item, add it to the selected items
-//                                selectedItems.add(item);
-//                            } else if (selectedItems.contains(item)) {
-//                                // Else, if the item is already in the array, remove it
-//                                selectedItems.remove((Object)item);
-//                            }
-//                            Log.d("item", "current crimes = " + Arrays.toString(Utils.getCurrentCrimes()));
-//                            Log.d("item", "selected items = " + Arrays.toString(selectedItems.toArray()));
-//                        })
-//                // Set the action buttons
-//                .setPositiveButton(R.string.ok, (dialog, id) -> Utils.setCurrentCrimes(currentSession))
-//                .setNegativeButton(R.string.cancel, (dialog, id) -> dismiss());
-//
-//        return builder.create();
-//    }
-
-
 }
