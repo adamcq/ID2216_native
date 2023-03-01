@@ -45,9 +45,6 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     // variable for our bar data set.
     BarDataSet barDataSet;
 
-    // array list for storing entries.
-    ArrayList barEntriesArrayList;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,9 +86,16 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("ChartFragment", "onpause");
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d("ChartFragment", "oncrtview");
         View v =  inflater.inflate(R.layout.fragment_chart, container, false);
 
 //        super.onCreate(savedInstanceState);
@@ -100,11 +104,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // initializing variable for bar chart.
         barChart = v.findViewById(R.id.idBarChart);
 
-        // calling method to get bar entries.
-        getBarEntries();
-
         // creating a new bar data set.
-        barDataSet = new BarDataSet(barEntriesArrayList, "Criminal Data");
+        barDataSet = new BarDataSet(getBarEntries(), "Criminal Data in " + Utils.getCurrentYear() + " in " + Utils.getCurrentDistrict());
 
         // creating a new bar data and
         // passing our bar data set.
@@ -115,13 +116,14 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         barChart.setData(barData);
 
         // adding color to our bar data set.
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
 
         // setting text color.
         barDataSet.setValueTextColor(Color.BLACK);
 
+
         // setting text size
-        barDataSet.setValueTextSize(16f);
+        barDataSet.setValueTextSize(20f);
         barChart.getDescription().setEnabled(false);
 
         /* MY CHANGES START */
@@ -161,9 +163,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     @Override
     public void onNothingSelected() { }
 
-    private void getBarEntries() {
+    private ArrayList<BarEntry> getBarEntries() {
         // creating a new array list
-        barEntriesArrayList = new ArrayList<>();
+        ArrayList<BarEntry> barEntriesArrayList = new ArrayList<>();
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
@@ -172,8 +174,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         int y = Utils.getCurrentYearIndex();
         int[] data = Utils.getData()[d][y];
         for (int c = 0; c < Utils.getCrimes().length; c++) {
-            if (data[c] != 0)
+            if (data[c] != 0 && Utils.getCurrentCrimes()[c])
                 barEntriesArrayList.add(new BarEntry((float)pos++, data[c]));
         }
+        return barEntriesArrayList;
     }
 }

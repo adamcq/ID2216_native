@@ -1,6 +1,12 @@
 package com.example.map_test1;
 
 
+import android.annotation.SuppressLint;
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.map_test1.view.CrimeDialogFragment;
+import com.example.map_test1.view.InfoDialogFragment;
 import com.example.map_test1.view.MapsFragment;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
@@ -257,7 +263,9 @@ public class Utils {
         currentDistrict = district;
     }
 
+    @SuppressLint("SetTextI18n")
     public static void updateMap() {
+        updateCrimeCounts();
         MapsFragment mapsFragment = new MapsFragment();
         mapsFragment.setPolygonStyle(Utils.getLayer());
     }

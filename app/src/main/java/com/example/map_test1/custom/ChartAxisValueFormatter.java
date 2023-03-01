@@ -20,14 +20,16 @@ public class ChartAxisValueFormatter implements IAxisValueFormatter
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        Object[] nonZeroCrimes = getNonZeroCrimes(Utils.getCurrentDistrictIndex(),Utils.getCurrentYearIndex()); // district, year
+        Object[] nonZeroCrimes = getNonZeroCrimes(); // district, year
         return (String) nonZeroCrimes[(int)value];
     }
 
-    private Object[] getNonZeroCrimes(int d, int y) {
+    private Object[] getNonZeroCrimes() {
+        int d = Utils.getCurrentDistrictIndex();
+        int y = Utils.getCurrentYearIndex();
         ArrayList<String> nonZeroCrimes = new ArrayList<>();
         for (int i = 0; i < Utils.getCrimes().length; i++) {
-            if (Utils.getData()[d][y][i] != 0) {
+            if (Utils.getData()[d][y][i] != 0 && Utils.getCurrentCrimes()[i]) {
                 nonZeroCrimes.add(Utils.getCrimes()[i]);
             }
         }
