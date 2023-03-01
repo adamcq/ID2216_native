@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/info_button"
+    android:id="@+id/info_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.InfoFragment">
+    tools:context=".view.InfoFragment"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="12dp">
+
 
     <!-- TODO: Update blank fragment layout -->
 
 
     <TextView
         android:id="@+id/textView2"
+        style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
@@ -48,7 +57,8 @@
                 android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/_red_level_7500" />
+                android:text="@string/_red_level_7500"
+                android:fontFamily="sans-serif-black"/>
         </LinearLayout>
 
         <LinearLayout
@@ -69,7 +79,8 @@
                 android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/_orange_level_5000_7500" />
+                android:text="@string/_orange_level_5000_7500"
+                android:fontFamily="sans-serif-black"/>
 
         </LinearLayout>
 
@@ -91,7 +102,8 @@
                 android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/_yellow_level_2500_5000" />
+                android:text="@string/_yellow_level_2500_5000"
+                android:fontFamily="sans-serif-black"/>
 
         </LinearLayout>
 
@@ -113,18 +125,21 @@
                 android:layout_width="320dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/_green_level_0_2500" />
+                android:text="@string/_green_level_0_2500"
+                android:fontFamily="sans-serif-black"/>
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView7"
-
-            android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="55dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="56dp"
             android:layout_marginRight="20dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
             android:text="@string/_Info" />
 
         <Button
@@ -137,4 +152,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</androidx.cardview.widget.CardView>

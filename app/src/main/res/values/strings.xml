@@ -17,14 +17,11 @@
     <string name="cancel">Cancel</string>
     <string name="place_holder">place_holder</string>
     <string name="checkbox">CheckBox</string>
-<<<<<<< HEAD
-    <string name="total_crime_case">Total Crime Case</string>
+    <string name="total_crime_case">Total Crime Cases</string>
     <string name="_red_level_7500">7500+</string>
     <string name="_orange_level_5000_7500">5000-7500</string>
     <string name="_yellow_level_2500_5000">2500-5000</string>
     <string name="_green_level_0_2500">0-2500</string>
-    <string name="_Info">Each color represents a total number of criminal records for given district.</string>
-=======
+    <string name="_Info">Each color represents the total number of reported criminal records for given district.</string>
     <string name="select_crimes">Select Crimes</string>
->>>>>>> 9fb971a39559e5acaccc2c1439439e6ef02d1ba7
 </resources>

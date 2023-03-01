@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.map_test1.databinding.ActivityMainBinding;
 import com.example.map_test1.view.CrimeDialogFragment;
+import com.example.map_test1.view.InfoFragment;
 import com.example.map_test1.view.YearFragment;
 
 public class MainActivity extends FragmentActivity {
@@ -55,11 +56,15 @@ public class MainActivity extends FragmentActivity {
                     DialogFragment crimeFragment = new CrimeDialogFragment();
                     crimeFragment.show(getSupportFragmentManager(),"showCrimeFragment");
                 });
-        binding.infoBtn.setOnClickListener(view -> Toast.makeText(this, "InfoBtn clicked", Toast.LENGTH_SHORT).show());
+        binding.infoBtn.setOnClickListener(view ->  {
+            onAnyButtonClicked();
+            DialogFragment infoFragment = new InfoFragment();
+            infoFragment.show(getSupportFragmentManager(), "showInfoFragment");
+            Toast.makeText(this, "InfoBtn clicked", Toast.LENGTH_SHORT).show();
+        });
         binding.yearBtn.setOnClickListener(view ->
                 {
                     onAnyButtonClicked();
-                    Toast.makeText(this, "YearBtn clicked", Toast.LENGTH_SHORT).show();
                     DialogFragment yearFragment = new YearFragment();
                     yearFragment.show(getSupportFragmentManager(),"showYearFragment");
                 });
