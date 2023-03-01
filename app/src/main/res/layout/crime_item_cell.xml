@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/crimeCellContainer"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="75dp"
     app:cardCornerRadius= "5dp"
     android:layout_margin= "5dp">
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/name"
             android:text="@string/place_holder"
-            style="@style/TextAppearance.AppCompat.Title"
+            android:fontFamily="sans-serif-black"
             android:layout_gravity="center"
             android:layout_weight="1"/>
 

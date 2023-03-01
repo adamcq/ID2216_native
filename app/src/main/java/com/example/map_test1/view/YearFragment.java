@@ -58,8 +58,8 @@ public class YearFragment extends DialogFragment {
         selectYearBtn.setOnClickListener(btn ->  {
             if (latestNumPickerYear != Utils.getCurrentYear()) {
                 Utils.setCurrentYear(latestNumPickerYear);
-                MapsFragment mapsFragment = new MapsFragment();
-                mapsFragment.setPolygonStyle(Utils.getLayer());
+                Utils.updateMap();
+                Utils.updateChart();
             }
             dismiss();
         });

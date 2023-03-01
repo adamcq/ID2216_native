@@ -17,4 +17,5 @@
     <string name="cancel">Cancel</string>
     <string name="place_holder">place_holder</string>
     <string name="checkbox">CheckBox</string>
+    <string name="select_crimes">Select Crimes</string>
 </resources>

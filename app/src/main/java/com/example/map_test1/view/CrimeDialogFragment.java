@@ -44,6 +44,7 @@ public class CrimeDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setOnClickListeners();
         RecyclerView courseRV = binding.crimeSelectionRecyclerView;
 
         // Here, we have created new array list and added data to it
@@ -64,9 +65,21 @@ public class CrimeDialogFragment extends DialogFragment {
         courseRV.setAdapter(crimeAdapter);
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Log.d("CrimeDialogFragment", "dismissed");
+    }
 
+    public void setOnClickListeners() {
+        binding.backButtonCrimeDialog.setOnClickListener(btn ->  {
+            Utils.updateMap();
+            Utils.updateChart();
+            dismiss();
+        });
+    }
 
-//    ---------------- WORKING VERSION BUT UGLY -----------------
+    //    ---------------- WORKING VERSION BUT UGLY -----------------
 //    public Dialog onCreateDialog(Bundle savedInstanceState) {
 //        selectedItems = new ArrayList();  // Where we track the selected items
 //        boolean[] currentSession = Arrays.copyOf(Utils.getCurrentCrimes(), Utils.getCurrentCrimes().length);
