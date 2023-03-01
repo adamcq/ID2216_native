@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.map_test1.R;
 import com.example.map_test1.Utils;
-import com.example.map_test1.custom.CrimeAxisValueFormatter;
+import com.example.map_test1.custom.ChartAxisValueFormatter;
 import com.example.map_test1.custom.XYMarkerView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.YAxis;
@@ -104,7 +104,7 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         getBarEntries();
 
         // creating a new bar data set.
-        barDataSet = new BarDataSet(barEntriesArrayList, "Geeks for Geeks");
+        barDataSet = new BarDataSet(barEntriesArrayList, "Criminal Data");
 
         // creating a new bar data and
         // passing our bar data set.
@@ -122,12 +122,12 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
         // setting text size
         barDataSet.setValueTextSize(16f);
-        barChart.getDescription().setEnabled(true);
+        barChart.getDescription().setEnabled(false);
 
         /* MY CHANGES START */
         barChart.setOnChartValueSelectedListener(this);
 
-        IAxisValueFormatter xAxisFormatter = new CrimeAxisValueFormatter(barChart);
+        IAxisValueFormatter xAxisFormatter = new ChartAxisValueFormatter(barChart);
         XYMarkerView mv = new XYMarkerView(getContext(), xAxisFormatter);
         mv.setChartView(barChart); // For bounds control
         barChart.setMarker(mv); // Set the marker to the chart

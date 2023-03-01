@@ -1,6 +1,9 @@
 package com.example.map_test1;
 
 
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +13,9 @@ public class Utils {
     public static Map<String, Integer> districtToIndex = new HashMap<String, Integer>();
     private final static int[] years = new int[]{2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022};
     private final static String[] districts = new String[]{"Kungsholmen", "Östermalm", "Bromma", "Skärholmen", "Södermalm", "Hägersten-Älvsjö", "Norrmalm", "Farsta", "Rinkeby-Kista", "Skarpnäck", "Spånga - Tensta", "Hägersten-Älvsjö (2)", "Enskede - Årsta - Vantör", "Hässelby - Vällingby"};;
-    private final static String[] crimes = new String[]{"Attempted murder or manslaughter (1, 2§)", "Abuse (5, 6 §)", "Causing the death of others (7, 10 §)", "Causing bodily injury, unrelated with a traffic accident (8, 10 §)", "Rape (1 a §)", "Sexual assault (2 §)  (Fr. o. m. 2018-07)", "Theft, roberry, etc. (8 kap.)", "Crimes against the public (13-15 kap.)", "Generally dangerous crimes (13 kap.)", "Violation of the narcotics penal code", "Violation of the law regarding guns (9 kap. 1-2 §)", "Violation of the law for carrying knives (1, 2, 4 §)"}; // [value]
+//    private final static String[] crimes = new String[]{"Attempted murder or manslaughter (1, 2§)", "Abuse (5, 6 §)", "Causing the death of others (7, 10 §)", "Causing bodily injury, unrelated with a traffic accident (8, 10 §)", "Rape (1 a §)", "Sexual assault (2 §)  (Fr. o. m. 2018-07)", "Theft, roberry, etc. (8 kap.)", "Crimes against the public (13-15 kap.)", "Generally dangerous crimes (13 kap.)", "Violation of the narcotics penal code", "Violation of the law regarding guns (9 kap. 1-2 §)", "Violation of the law for carrying knives (1, 2, 4 §)"}; // [value]
+    private final static String[] crimes = new String[]{"Attempted murder or manslaughter", "Abuse", "Causing the death of others", "Causing bodily injury, unrelated with a traffic accident", "Rape", "Sexual assault", "Theft, roberry, etc.", "Crimes against the public", "Generally dangerous crimes", "Violation of the narcotics penal code", "Violation of the law regarding guns", "Violation of the law for carrying knives"}; // [value]
+
     private final static int[][][] data = new int[][][]{ // [district][year][value]
             {
                     {9, 696, 4, 28, 0, 0, 4741, 166, 23, 723, 55, 226},
@@ -166,6 +171,27 @@ public class Utils {
                     {10, 756, 2, 21, 0, 3, 2845, 107, 32, 955, 91, 74}
             }
     };
+
+    /**
+     * data to be displayed
+     */
+    private static boolean[] currentCrimes = new boolean[] {
+            true, true, true, true, true, true, true, true, true, true, true, true
+    };
+    public static boolean[] getCurrentCrimes() {
+        return currentCrimes;
+    }
+    public static void setCurrentCrimes(boolean[] newCrimes) {
+        currentCrimes = newCrimes;
+    }
+
+    private static GeoJsonLayer layer;
+    public static GeoJsonLayer getLayer() {
+        return layer;
+    }
+    public static void setLayer(GeoJsonLayer newLayer) {
+        layer = newLayer;
+    }
 
     public static int[] getYears() {
         return years;

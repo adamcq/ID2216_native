@@ -7,17 +7,17 @@
             <item
                 android:id="@+id/maps"
                 android:title="@string/map"
-                android:icon="@drawable/map_icon"
+                android:icon="@drawable/ic_map"
                 />
             <item
                 android:id="@+id/year"
                 android:title="@string/year"
-                android:icon="@drawable/calendar_icon"
+                android:icon="@drawable/ic_calendar"
                 />
             <item
                 android:id="@+id/info"
                 android:title="@string/info"
-                android:icon="@drawable/info_icon"
+                android:icon="@drawable/ic_info"
                 />
         </menu>
     </item>

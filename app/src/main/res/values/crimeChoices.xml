@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="crimeChoicesArray">
+        <item>Attempted murder or manslaughter</item>
+        <item>Abuse</item>
+        <item>Causing the death of others</item>
+        <item>Causing bodily injury, unrelated with a traffic accident</item>
+        <item>Rape</item>
+        <item>Sexual assault</item>
+        <item>Theft, roberry, etc.</item>
+        <item>Crimes against the public</item>
+        <item>Generally dangerous crimes</item>
+        <item>Violation of the narcotics penal code</item>
+        <item>Violation of the law regarding guns</item>
+        <item>Violation of the law for carrying knives</item>
+    </string-array>
+</resources>
