@@ -178,7 +178,8 @@ public class MapsFragment extends Fragment {
     private static int getCrimeCount(int y, int d) {
         int crimeCount = 0;
         for (int c = 0; c < Utils.getCrimes().length; c++) {
-            crimeCount += Utils.getData()[d][y][c];
+            if (Utils.getCurrentCrimes()[c]) // check if it is in the selection
+                crimeCount += Utils.getData()[d][y][c];
         }
         return crimeCount;
     }

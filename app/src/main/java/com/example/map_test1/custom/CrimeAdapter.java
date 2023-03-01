@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.map_test1.R;
+import com.example.map_test1.Utils;
 
 import java.util.ArrayList;
 
@@ -39,9 +39,14 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder>{
         // to set data to textview and imageview of each card layout
         CrimeItem model = crimeItemArrayList.get(position);
         Log.d("CrimeAdapter", ""+position);
-        holder.uncheckedBtn.setImageResource(R.drawable.ic_unchecked);
+
+        if (Utils.getCurrentCrimes()[position])
+            holder.checkButton.setImageResource(R.drawable.ic_checked);
+        else
+            holder.checkButton.setImageResource(R.drawable.ic_unchecked);
+
         holder.crimeName.setText(model.getName());
-//        toggleCheck(holder, position2);
+        setButtonListener(holder, position);
     }
 
     @Override
@@ -52,18 +57,25 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder>{
 
     // View holder class for initializing of your views such as TextView and Imageview
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageButton uncheckedBtn;
+        private final ImageButton checkButton;
         private final TextView crimeName;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            uncheckedBtn = itemView.findViewById(R.id.uncheckedButton);
+            checkButton = itemView.findViewById(R.id.uncheckedButton);
             crimeName = itemView.findViewById(R.id.name);
         }
     }
 
-    private void setButtonListener(CrimeAdapter.ViewHolder holder) {
-        holder.uncheckedBtn.setOnClickListener(btn ->  {
-            holder.uncheckedBtn.setImageResource(R.drawable.ic_checked);
+    private void setButtonListener(CrimeAdapter.ViewHolder holder, int position) {
+        holder.checkButton.setOnClickListener(btn ->  {
+            boolean[] activeCrimes = Utils.getCurrentCrimes();
+            activeCrimes[position] = !activeCrimes[position];
+//            Utils.setCurrentCrimes(activeCrimes); // maybe optional
+
+            if (activeCrimes[position])
+                holder.checkButton.setImageResource(R.drawable.ic_checked);
+            else
+                holder.checkButton.setImageResource(R.drawable.ic_unchecked);
         });
     }
 }

@@ -1,6 +1,7 @@
 package com.example.map_test1;
 
 
+import com.example.map_test1.view.MapsFragment;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 
 import java.util.ArrayList;
@@ -229,5 +230,14 @@ public class Utils {
 
     public static void setCurrentDistrict(String district) {
         currentDistrict = district;
+    }
+
+    public static void updateMap() {
+        MapsFragment mapsFragment = new MapsFragment();
+        mapsFragment.setPolygonStyle(Utils.getLayer());
+    }
+
+    public static void updateChart() {
+        // TODO
     }
 }
