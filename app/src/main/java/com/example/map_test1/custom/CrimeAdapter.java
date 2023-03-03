@@ -17,12 +17,10 @@ import com.example.map_test1.Utils;
 import java.util.ArrayList;
 
 public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder>{
-    private final Context context;
     private final ArrayList<CrimeItem> crimeItemArrayList;
 
     // Constructor
     public CrimeAdapter(Context context, ArrayList<CrimeItem> courseModelArrayList) {
-        this.context = context;
         this.crimeItemArrayList = courseModelArrayList;
     }
 
