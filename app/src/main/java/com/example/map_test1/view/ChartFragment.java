@@ -13,11 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.map_test1.R;
-import com.example.map_test1.Utils;
+import com.example.map_test1.model.Utils;
 import com.example.map_test1.custom.ChartAxisValueFormatter;
 import com.example.map_test1.custom.XYMarkerView;
 import com.github.mikephil.charting.charts.BarChart;
@@ -92,7 +91,8 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("info", "view created");
+        view.setTag("ChartFragment");
+        Log.d("info", "view created, tag = " + view.getTag());
 
         ImageView refresh = view.findViewById(R.id.refresh_btn);
         refresh.setOnClickListener(btn ->  {

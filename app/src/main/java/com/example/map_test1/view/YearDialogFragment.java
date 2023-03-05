@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.map_test1.R;
-import com.example.map_test1.Utils;
+import com.example.map_test1.model.Utils;
 import com.example.map_test1.databinding.FragmentYearBinding;
 
 public class YearDialogFragment extends DialogFragment {

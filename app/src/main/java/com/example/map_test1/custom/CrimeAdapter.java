@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.map_test1.R;
-import com.example.map_test1.Utils;
+import com.example.map_test1.model.CrimeItem;
+import com.example.map_test1.model.Utils;
 
 import java.util.ArrayList;
 

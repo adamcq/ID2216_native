@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.map_test1.R;
-import com.example.map_test1.Utils;
+import com.example.map_test1.model.Utils;
 import com.example.map_test1.databinding.FragmentInfoBinding;
 
 public class InfoDialogFragment extends DialogFragment {

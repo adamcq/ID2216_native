@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.map_test1.R;
-import com.example.map_test1.Utils;
+import com.example.map_test1.model.Utils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,7 +27,6 @@ import com.google.maps.android.data.geojson.GeoJsonPolygonStyle;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class MapsFragment extends Fragment {
 
