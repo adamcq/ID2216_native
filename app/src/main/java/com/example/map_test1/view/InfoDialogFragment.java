@@ -37,10 +37,10 @@ public class InfoDialogFragment extends DialogFragment {
     @SuppressLint("SetTextI18n")
     private void setupView(View view) {
         // TODO change the textview values based on crimes selected
-        ((TextView)view.findViewById(R.id.greenLevel)).setText("up to " + Utils.getMaxCrimeCount()/4 + " (25%)");
-        ((TextView)view.findViewById(R.id.yellowLevel)).setText("up to " + Utils.getMaxCrimeCount()/2 + " (50%)");
-        ((TextView)view.findViewById(R.id.orangeLevel)).setText("up to " + (int)(Utils.getMaxCrimeCount() * 0.75) + " (75%)");
-        ((TextView)view.findViewById(R.id.redLevel)).setText("up to " + Utils.getMaxCrimeCount() + " (max)");
+        ((TextView)view.findViewById(R.id.greenLevel)).setText("up to " + Utils.getCurrentMaxCrimeCount()/4 + " (25%)");
+        ((TextView)view.findViewById(R.id.yellowLevel)).setText("up to " + Utils.getCurrentMaxCrimeCount()/2 + " (50%)");
+        ((TextView)view.findViewById(R.id.orangeLevel)).setText("up to " + (int)(Utils.getCurrentMaxCrimeCount() * 0.75) + " (75%)");
+        ((TextView)view.findViewById(R.id.redLevel)).setText("up to " + Utils.getCurrentMaxCrimeCount() + " (max)");
     }
 
     private void setupListeners(View view) {

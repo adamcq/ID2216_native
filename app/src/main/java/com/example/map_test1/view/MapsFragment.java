@@ -152,11 +152,11 @@ public class MapsFragment extends Fragment {
      * @return color based on crimeCount (the bigger the more red)
      */
     private int getColorByCrimeCount(int crimeCount) {
-        if (crimeCount < Utils.getMaxCrimeCount() / 4) {
+        if (crimeCount < Utils.getCurrentMaxCrimeCount() / 4) {
             return CRIME_LEVEL_COLORS[0];
-        } else if (crimeCount < Utils.getMaxCrimeCount() / 2) {
+        } else if (crimeCount < Utils.getCurrentMaxCrimeCount() / 2) {
             return CRIME_LEVEL_COLORS[1];
-        } else if (crimeCount < 0.75 * Utils.getMaxCrimeCount()) {
+        } else if (crimeCount < 0.75 * Utils.getCurrentMaxCrimeCount()) {
             return CRIME_LEVEL_COLORS[2];
         } else {
             return CRIME_LEVEL_COLORS[3];

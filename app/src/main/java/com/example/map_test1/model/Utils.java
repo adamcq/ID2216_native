@@ -24,9 +24,9 @@ public class Utils {
             true, true, true, true, true, true, true, true, true, true, true, true
     };
 
-    private static int maxCrimeCount;
-    public static int getMaxCrimeCount() {
-        return maxCrimeCount;
+    private static int currentMaxCrimeCount;
+    public static int getCurrentMaxCrimeCount() {
+        return currentMaxCrimeCount;
     }
 
     private static int[] crimeCounts;
@@ -35,7 +35,7 @@ public class Utils {
     }
     public static void updateCrimeCounts() {
         crimeCounts = new int[Data.districts.length];
-        maxCrimeCount = 0;
+        currentMaxCrimeCount = 0;
         for (int d = 0; d < Data.districts.length; d++) {
             int crimeCount = 0;
             for (int c = 0; c < Data.crimes.length; c++)
@@ -43,8 +43,8 @@ public class Utils {
                     crimeCount += Data.data[d][getCurrentYearIndex()][c];
             crimeCounts[d] = crimeCount; // update crime count
 
-            if (crimeCounts[d] > maxCrimeCount) // update max crime count
-                maxCrimeCount = crimeCounts[d];
+            if (crimeCounts[d] > currentMaxCrimeCount) // update max crime count
+                currentMaxCrimeCount = crimeCounts[d];
         }
     }
 
