@@ -2,6 +2,7 @@ package com.example.map_test1.view;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.example.map_test1.model.Utils;
 import com.example.map_test1.view.CrimeDialogFragment;
 import com.example.map_test1.view.InfoDialogFragment;
 import com.example.map_test1.view.YearDialogFragment;
+import com.example.map_test1.viewModel.SharedViewModel;
 
 public class MainActivity extends FragmentActivity {
 
@@ -24,24 +26,28 @@ public class MainActivity extends FragmentActivity {
     private Animation fromBottom;
     private Animation toBottom;
     private boolean clicked = false;
+    private SharedViewModel mSharedViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mSharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        mSharedViewModel.init();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        initMappings();
+//        initMappings();
         initAnimations();
         setOnClickListeners();
     }
 
-    private void initMappings() {
-        // create district to index mapping
-        for (int d = 0; d < Utils.getDistricts().length; d++)
-            Utils.districtToIndex.put(Utils.getDistricts()[d], d);
-    }
+//    private void initMappings() {
+//        // create district to index mapping
+//        for (int d = 0; d < Utils.getDistricts().length; d++)
+//            Utils.districtToIndex.put(Utils.getDistricts()[d], d);
+//    }
 
     private void initAnimations() {
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);

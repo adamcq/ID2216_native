@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -16,9 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.map_test1.R;
-import com.example.map_test1.model.Utils;
 import com.example.map_test1.custom.ChartAxisValueFormatter;
 import com.example.map_test1.custom.XYMarkerView;
+import com.example.map_test1.viewModel.SharedViewModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -43,21 +45,32 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
 
     // variable for our bar data set.
     BarDataSet barDataSet;
+    private SharedViewModel mSharedViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.d("ChartFragment", "oncrtview");
+        super.onCreate(savedInstanceState);
         View v =  inflater.inflate(R.layout.fragment_chart, container, false);
 
-        super.onCreate(savedInstanceState);
+        mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         // initializing variable for bar chart.
         barChart = v.findViewById(R.id.idBarChart);
+        updateChart();
 
+        mSharedViewModel.getCurrentCrimeCounts().observe(getViewLifecycleOwner(), integers -> updateChart());
+
+        mSharedViewModel.getCurrentYear().observe(getViewLifecycleOwner(), integer -> updateChart());
+
+        return v;
+    }
+
+    private void updateChart() {
         // creating a new bar data set.
-        barDataSet = new BarDataSet(getBarEntries(), "Criminal Data in " + Utils.getCurrentYear() + " in " + Utils.getCurrentDistrict());
+        barDataSet = new BarDataSet(getBarEntries(), "Criminal Data in " + mSharedViewModel.getCurrentYear().getValue() + " in " + mSharedViewModel.getCurrentDistrict().getValue());
 
         // creating a new bar data and
         // passing our bar data set.
@@ -80,26 +93,12 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         /* MY CHANGES START */
         barChart.setOnChartValueSelectedListener(this);
 
-        IAxisValueFormatter xAxisFormatter = new ChartAxisValueFormatter(barChart);
+        IAxisValueFormatter xAxisFormatter = new ChartAxisValueFormatter(barChart, mSharedViewModel);
         XYMarkerView mv = new XYMarkerView(getContext(), xAxisFormatter);
         mv.setChartView(barChart); // For bounds control
         barChart.setMarker(mv); // Set the marker to the chart
-
-        return v;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        view.setTag("ChartFragment");
-        Log.d("info", "view created, tag = " + view.getTag());
-
-        ImageView refresh = view.findViewById(R.id.refresh_btn);
-        refresh.setOnClickListener(btn ->  {
-            Log.d("info", "btn clicked");
-            Navigation.findNavController(view).navigate(R.id.action_chartFragment_self);
-        });
-    }
 
     private final RectF onValueSelectedRectF = new RectF();
     @Override
@@ -132,12 +131,12 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
         int pos = 0;
-        int d = Utils.getCurrentDistrictIndex();
-        int y = Utils.getCurrentYearIndex();
-        int[] data = Utils.getData()[d][y];
-        for (int c = 0; c < Utils.getCrimes().length; c++) {
-            if (data[c] != 0 && Utils.getCurrentCrimes()[c])
-                barEntriesArrayList.add(new BarEntry((float)pos++, data[c]));
+        int d = mSharedViewModel.getIndexByDistrictName(mSharedViewModel.getCurrentDistrict().getValue());
+        int y = mSharedViewModel.getCurrentYear().getValue() - mSharedViewModel.getYears().getValue()[0];
+        Integer[] records = mSharedViewModel.getRecords().getValue()[d][y];
+        for (int c = 0; c < mSharedViewModel.getCrimes().getValue().length; c++) {
+            if (records[c] != 0 && mSharedViewModel.getCurrentCrimes().getValue()[c])
+                barEntriesArrayList.add(new BarEntry((float)pos++, records[c]));
         }
         return barEntriesArrayList;
     }

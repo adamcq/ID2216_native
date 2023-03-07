@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +15,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.map_test1.R;
-import com.example.map_test1.model.Utils;
 import com.example.map_test1.databinding.FragmentInfoBinding;
+import com.example.map_test1.viewModel.SharedViewModel;
 
 public class InfoDialogFragment extends DialogFragment {
      FragmentInfoBinding binding;
+     private SharedViewModel mSharedViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInfoBinding.inflate(inflater);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         return inflater.inflate(R.layout.fragment_info, container, false);
     }
 
@@ -37,10 +40,11 @@ public class InfoDialogFragment extends DialogFragment {
     @SuppressLint("SetTextI18n")
     private void setupView(View view) {
         // TODO change the textview values based on crimes selected
-        ((TextView)view.findViewById(R.id.greenLevel)).setText("up to " + Utils.getCurrentMaxCrimeCount()/4 + " (25%)");
-        ((TextView)view.findViewById(R.id.yellowLevel)).setText("up to " + Utils.getCurrentMaxCrimeCount()/2 + " (50%)");
-        ((TextView)view.findViewById(R.id.orangeLevel)).setText("up to " + (int)(Utils.getCurrentMaxCrimeCount() * 0.75) + " (75%)");
-        ((TextView)view.findViewById(R.id.redLevel)).setText("up to " + Utils.getCurrentMaxCrimeCount() + " (max)");
+        int maxCrimeCount = mSharedViewModel.getCurrentMaxCrimeCount().getValue();
+        ((TextView)view.findViewById(R.id.greenLevel)).setText("up to " + maxCrimeCount/4 + " (25%)");
+        ((TextView)view.findViewById(R.id.yellowLevel)).setText("up to " + maxCrimeCount/2 + " (50%)");
+        ((TextView)view.findViewById(R.id.orangeLevel)).setText("up to " + (int)(maxCrimeCount * 0.75) + " (75%)");
+        ((TextView)view.findViewById(R.id.redLevel)).setText("up to " + maxCrimeCount + " (max)");
     }
 
     private void setupListeners(View view) {

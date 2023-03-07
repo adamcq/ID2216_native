@@ -3,6 +3,8 @@ package com.example.map_test1.view;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.annotation.SuppressLint;
@@ -14,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.map_test1.R;
-import com.example.map_test1.model.Utils;
+import com.example.map_test1.viewModel.SharedViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,17 +36,8 @@ public class MapsFragment extends Fragment {
     final private int[] CRIME_LEVEL_COLORS = new int[]{0x7799FF33, 0x77FFFF33, 0x77FF9900, 0x77FF0000};
     private final static String mLogTag = "MapsFragment";
     private View v;
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
+    private SharedViewModel mSharedViewModel;
+    final private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(@NonNull GoogleMap googleMap) {
             mMap = googleMap;
@@ -57,12 +50,35 @@ public class MapsFragment extends Fragment {
         }
     };
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+        Button currentYearBtn = v.findViewById(R.id.incrementYearButton);
+        mSharedViewModel.getCurrentYear().observe(getViewLifecycleOwner(), year -> {
+            currentYearBtn.setText(Integer.toString(year));
+            try {
+                updateMap();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        });
+
+        mSharedViewModel.getCurrentCrimeCounts().observe(getViewLifecycleOwner(), crimes -> {
+            try {
+                updateMap();
+            } catch (Exception e) {
+                Log.d("exception", e.toString());
+            }
+        });
+
         return v;
     }
 
@@ -72,6 +88,26 @@ public class MapsFragment extends Fragment {
 
         initMap();
         setupView(view);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setupView(View view) {
+        mSharedViewModel.updateCurrentCrimeCounts();
+
+        Button button = view.findViewById(R.id.incrementYearButton);
+        button.setText(Integer.toString(mSharedViewModel.getCurrentYear().getValue()));
+
+        button.setOnClickListener(v -> {
+            mSharedViewModel.incrementYear();
+            button.setText(Integer.toString(mSharedViewModel.getCurrentYear().getValue()));
+            updateMap();
+        });
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void updateMap() {
+        Log.d("SVM info", String.valueOf(mSharedViewModel.getLayer().getValue()));
+        setPolygonStyle(mSharedViewModel.getLayer().getValue());
     }
 
     private void initMap() {
@@ -85,23 +121,11 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private void setupView(View view) {
-        Utils.updateCrimeCounts();
-
-        Button button = view.findViewById(R.id.button);
-        button.setText(Integer.toString(Utils.getCurrentYear()));
-        button.setOnClickListener(v -> {
-            Utils.setCurrentYear((Utils.getCurrentYear() + 2) % 8 + 2015);
-            button.setText(Integer.toString(Utils.getCurrentYear()));
-            Utils.updateMap();
-        });
-    }
-
     private void retrieveFileFromResource() {
         try {
-            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.neighbourhoods, getContext());
-            Utils.setLayer(layer);
+            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.neighbourhoods, requireContext());
+            Log.d("SVM info", String.valueOf(layer));
+            mSharedViewModel.setLayer(layer);
             addGeoJsonLayerToMap(layer);
         } catch (IOException e) {
             Log.e(mLogTag, "GeoJSON file could not be read");
@@ -111,20 +135,22 @@ public class MapsFragment extends Fragment {
     }
     private void addGeoJsonLayerToMap(GeoJsonLayer layer) {
         setPolygonStyle(layer);
+        layer.removeLayerFromMap();
         layer.addLayerToMap();
         layer.setOnFeatureClickListener(feature -> {
-                Utils.setCurrentDistrict(feature.getProperty("neighbourhood"));
+                mSharedViewModel.updateCurrentDistrict(feature.getProperty("neighbourhood"));
                 Navigation.findNavController(v).navigate(R.id.action_maps_to_chartFragment);
         });
     }
 
     public void setPolygonStyle(GeoJsonLayer layer) {
-        int[] crimeCounts = Utils.getCrimeCounts();
+        Log.d("info", mSharedViewModel.toString());
+        Integer[] crimeCounts = mSharedViewModel.getCurrentCrimeCounts().getValue();
         for (GeoJsonFeature feature : layer.getFeatures()) {
 
             // get and set color for district for year-district pair
             GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-            int d = Utils.districtToIndex.get(feature.getProperty("neighbourhood"));
+            int d = mSharedViewModel.getIndexByDistrictName(feature.getProperty("neighbourhood"));
             int color = getColorByCrimeCount(crimeCounts[d]);
 
             polygonStyle.setFillColor(color);
@@ -133,37 +159,16 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    /**
-     * @param y year index
-     * @param d district index
-     * @return crime count for given year-district pair based on data
-     */
-    private static int getCrimeCount(int y, int d) {
-        int crimeCount = 0;
-        for (int c = 0; c < Utils.getCrimes().length; c++) {
-            if (Utils.getCurrentCrimes()[c]) // check if it is in the selection
-                crimeCount += Utils.getData()[d][y][c];
-        }
-        return crimeCount;
-    }
-
-    /**
-     * @param crimeCount the amount of crimes
-     * @return color based on crimeCount (the bigger the more red)
-     */
-    private int getColorByCrimeCount(int crimeCount) {
-        if (crimeCount < Utils.getCurrentMaxCrimeCount() / 4) {
+        private int getColorByCrimeCount(int crimeCount) {
+        int maxCrimeCount = mSharedViewModel.getCurrentMaxCrimeCount().getValue();
+        if (crimeCount < maxCrimeCount / 4) {
             return CRIME_LEVEL_COLORS[0];
-        } else if (crimeCount < Utils.getCurrentMaxCrimeCount() / 2) {
+        } else if (crimeCount < maxCrimeCount / 2) {
             return CRIME_LEVEL_COLORS[1];
-        } else if (crimeCount < 0.75 * Utils.getCurrentMaxCrimeCount()) {
+        } else if (crimeCount < 0.75 * maxCrimeCount) {
             return CRIME_LEVEL_COLORS[2];
         } else {
             return CRIME_LEVEL_COLORS[3];
         }
-    }
-
-    public int getYearIndexByYear(int year) {
-        return year - 2015;
     }
 }

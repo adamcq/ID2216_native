@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".view.ChartFragment">
 
-    <ImageView
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="56dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="16dp"
-        android:backgroundTint="#00FFFFFF"
-        android:id="@+id/refresh_btn"
-        android:src="@drawable/ic_refresh" />
-
     <!--Ui component for our bar chart-->
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/idBarChart"

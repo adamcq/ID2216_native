@@ -13,16 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.map_test1.R;
 import com.example.map_test1.model.CrimeItem;
-import com.example.map_test1.model.Utils;
+import com.example.map_test1.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 
 public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder>{
     private final ArrayList<CrimeItem> crimeItemArrayList;
+    SharedViewModel mSharedViewModel;
 
     // Constructor
-    public CrimeAdapter(Context context, ArrayList<CrimeItem> courseModelArrayList) {
-        this.crimeItemArrayList = courseModelArrayList;
+    public CrimeAdapter(Context context, ArrayList<CrimeItem> crimeItemArrayList, SharedViewModel sharedViewModel) {
+        this.crimeItemArrayList = crimeItemArrayList;
+        mSharedViewModel = sharedViewModel;
     }
 
     @NonNull
@@ -39,7 +41,7 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder>{
         CrimeItem model = crimeItemArrayList.get(position);
         Log.d("CrimeAdapter", ""+position);
 
-        if (Utils.getCurrentCrimes()[position])
+        if (mSharedViewModel.getCurrentCrimes().getValue()[position])
             holder.checkButton.setImageResource(R.drawable.ic_checked);
         else
             holder.checkButton.setImageResource(R.drawable.ic_unchecked);
@@ -67,9 +69,10 @@ public class CrimeAdapter extends RecyclerView.Adapter<CrimeAdapter.ViewHolder>{
 
     private void setButtonListener(CrimeAdapter.ViewHolder holder, int position) {
         holder.checkButton.setOnClickListener(btn ->  {
-            boolean[] activeCrimes = Utils.getCurrentCrimes();
+            boolean[] activeCrimes = mSharedViewModel.getCurrentCrimes().getValue();
+
             activeCrimes[position] = !activeCrimes[position];
-//            Utils.setCurrentCrimes(activeCrimes); // maybe optional
+            mSharedViewModel.updateCurrentCrimes(activeCrimes);
 
             if (activeCrimes[position])
                 holder.checkButton.setImageResource(R.drawable.ic_checked);
