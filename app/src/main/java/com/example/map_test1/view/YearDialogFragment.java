@@ -15,7 +15,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.map_test1.R;
-import com.example.map_test1.model.Utils;
 import com.example.map_test1.databinding.FragmentYearBinding;
 import com.example.map_test1.viewModel.SharedViewModel;
 
@@ -60,9 +59,6 @@ public class YearDialogFragment extends DialogFragment {
         selectYearBtn.setOnClickListener(btn ->  {
             if (latestNumPickerYear != mSharedViewModel.getCurrentYear().getValue()) {
                 mSharedViewModel.updateCurrentYear(latestNumPickerYear);
-
-//                Utils.updateMap();
-//                Utils.updateChart();
             }
             dismiss();
         });

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -35,7 +36,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.ArrayList;
 
-public class ChartFragment extends Fragment implements OnChartValueSelectedListener {
+public class ChartFragment extends Fragment{
 
     // variable for our bar chart
     BarChart barChart;
@@ -50,25 +51,22 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.d("ChartFragment", "oncrtview");
         super.onCreate(savedInstanceState);
         View v =  inflater.inflate(R.layout.fragment_chart, container, false);
 
-        mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
         // initializing variable for bar chart.
         barChart = v.findViewById(R.id.idBarChart);
-        updateChart();
 
-        mSharedViewModel.getCurrentCrimeCounts().observe(getViewLifecycleOwner(), integers -> updateChart());
+        mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
+        mSharedViewModel.getCurrentCrimes().observe(getViewLifecycleOwner(), booleans -> updateChart());
         mSharedViewModel.getCurrentYear().observe(getViewLifecycleOwner(), integer -> updateChart());
 
         return v;
     }
 
     private void updateChart() {
+        barChart.invalidate();
         // creating a new bar data set.
         barDataSet = new BarDataSet(getBarEntries(), "Criminal Data in " + mSharedViewModel.getCurrentYear().getValue() + " in " + mSharedViewModel.getCurrentDistrict().getValue());
 
@@ -89,10 +87,9 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
         // setting text size
         barDataSet.setValueTextSize(16f);
         barChart.getDescription().setEnabled(false);
+        barChart.setBackgroundColor(0xFFEEEAEE);
 
         /* MY CHANGES START */
-        barChart.setOnChartValueSelectedListener(this);
-
         IAxisValueFormatter xAxisFormatter = new ChartAxisValueFormatter(barChart, mSharedViewModel);
         XYMarkerView mv = new XYMarkerView(getContext(), xAxisFormatter);
         mv.setChartView(barChart); // For bounds control
@@ -100,31 +97,10 @@ public class ChartFragment extends Fragment implements OnChartValueSelectedListe
     }
 
 
-    private final RectF onValueSelectedRectF = new RectF();
-    @Override
-    public void onValueSelected(Entry e, Highlight h) {
 
-        if (e == null)
-            return;
-
-        RectF bounds = onValueSelectedRectF;
-        barChart.getBarBounds((BarEntry) e, bounds);
-        MPPointF position = barChart.getPosition(e, YAxis.AxisDependency.LEFT);
-
-        Log.i("bounds", bounds.toString());
-        Log.i("position", position.toString());
-
-        Log.i("x-index",
-                "low: " + barChart.getLowestVisibleX() + ", high: "
-                        + barChart.getHighestVisibleX());
-
-        MPPointF.recycleInstance(position);
-    }
-
-    @Override
-    public void onNothingSelected() { }
 
     private ArrayList<BarEntry> getBarEntries() {
+        Log.d("chartTest", "getBarEntries()");
         // creating a new array list
         ArrayList<BarEntry> barEntriesArrayList = new ArrayList<>();
 

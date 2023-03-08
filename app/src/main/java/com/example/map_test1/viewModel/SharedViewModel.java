@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.map_test1.model.Utils;
 import com.example.map_test1.repository.CriminalDataRepository;
 import com.example.map_test1.view.MapsFragment;
 import com.google.maps.android.data.geojson.GeoJsonLayer;

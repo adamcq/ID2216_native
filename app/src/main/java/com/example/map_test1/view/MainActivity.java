@@ -12,7 +12,6 @@ import android.view.animation.AnimationUtils;
 
 import com.example.map_test1.R;
 import com.example.map_test1.databinding.ActivityMainBinding;
-import com.example.map_test1.model.Utils;
 import com.example.map_test1.view.CrimeDialogFragment;
 import com.example.map_test1.view.InfoDialogFragment;
 import com.example.map_test1.view.YearDialogFragment;
@@ -38,16 +37,11 @@ public class MainActivity extends FragmentActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        initMappings();
         initAnimations();
         setOnClickListeners();
     }
 
-//    private void initMappings() {
-//        // create district to index mapping
-//        for (int d = 0; d < Utils.getDistricts().length; d++)
-//            Utils.districtToIndex.put(Utils.getDistricts()[d], d);
-//    }
+
 
     private void initAnimations() {
         rotateOpen = AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim);
