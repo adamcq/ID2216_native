@@ -3,7 +3,6 @@ package com.example.map_test1.view;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -150,7 +149,7 @@ public class MapsFragment extends Fragment {
 
             // get and set color for district for year-district pair
             GeoJsonPolygonStyle polygonStyle = new GeoJsonPolygonStyle();
-            int d = mSharedViewModel.getIndexByDistrictName(feature.getProperty("neighbourhood"));
+            int d = mSharedViewModel.findDistrictIndexByName(feature.getProperty("neighbourhood"));
             int color = getColorByCrimeCount(crimeCounts[d]);
 
             polygonStyle.setFillColor(color);

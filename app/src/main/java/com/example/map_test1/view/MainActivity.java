@@ -12,9 +12,6 @@ import android.view.animation.AnimationUtils;
 
 import com.example.map_test1.R;
 import com.example.map_test1.databinding.ActivityMainBinding;
-import com.example.map_test1.view.CrimeDialogFragment;
-import com.example.map_test1.view.InfoDialogFragment;
-import com.example.map_test1.view.YearDialogFragment;
 import com.example.map_test1.viewModel.SharedViewModel;
 
 public class MainActivity extends FragmentActivity {
@@ -80,7 +77,6 @@ public class MainActivity extends FragmentActivity {
 
     private void setVisibility(boolean clicked) {
         if (!clicked) {
-            Log.d("info", "setVisibility");
             binding.crimeBtn.setVisibility(View.VISIBLE);
             binding.infoBtn.setVisibility(View.VISIBLE);
             binding.yearBtn.setVisibility(View.VISIBLE);
@@ -94,7 +90,6 @@ public class MainActivity extends FragmentActivity {
 
     private void setAnimation(boolean clicked) {
         if (!clicked) {
-            Log.d("info", "setAnimation");
             binding.crimeBtn.setAnimation(fromBottom);
             binding.infoBtn.setAnimation(fromBottom);
             binding.yearBtn.setAnimation(fromBottom);

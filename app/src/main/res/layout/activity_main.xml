@@ -62,7 +62,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_suspicious"
+        android:src="@drawable/ic_danger"
         android:visibility="invisible"
         app:backgroundTint="#EEEAEE"
         app:layout_constraintBottom_toTopOf="@+id/year_btn"
