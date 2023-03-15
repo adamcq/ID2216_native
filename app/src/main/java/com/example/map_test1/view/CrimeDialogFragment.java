@@ -17,19 +17,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.map_test1.custom.CrimeAdapter;
+import com.example.map_test1.databinding.DialogFragmentCrimeBinding;
 import com.example.map_test1.model.CrimeItem;
-import com.example.map_test1.databinding.FragmentCrimeDialogBinding;
 import com.example.map_test1.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 
 public class CrimeDialogFragment extends DialogFragment {
-    FragmentCrimeDialogBinding binding;
+    DialogFragmentCrimeBinding binding;
     private SharedViewModel mSharedViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentCrimeDialogBinding.inflate(inflater);
+        binding = DialogFragmentCrimeBinding.inflate(inflater);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 

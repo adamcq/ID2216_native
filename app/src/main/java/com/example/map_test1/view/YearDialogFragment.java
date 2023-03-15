@@ -15,21 +15,21 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.map_test1.R;
-import com.example.map_test1.databinding.FragmentYearBinding;
+import com.example.map_test1.databinding.DialogFragmentYearBinding;
 import com.example.map_test1.viewModel.SharedViewModel;
 
 public class YearDialogFragment extends DialogFragment {
 
     private int latestNumPickerYear;
-    FragmentYearBinding binding;
+    DialogFragmentYearBinding binding;
     SharedViewModel mSharedViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentYearBinding.inflate(inflater);
+        binding = DialogFragmentYearBinding.inflate(inflater);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        return inflater.inflate(R.layout.fragment_year, container, false);
+        return inflater.inflate(R.layout.dialog_fragment_year, container, false);
     }
 
     @Override

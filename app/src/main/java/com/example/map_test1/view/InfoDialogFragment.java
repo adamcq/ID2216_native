@@ -15,19 +15,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.map_test1.R;
-import com.example.map_test1.databinding.FragmentInfoBinding;
+import com.example.map_test1.databinding.DialogFragmentInfoBinding;
 import com.example.map_test1.viewModel.SharedViewModel;
 
 public class InfoDialogFragment extends DialogFragment {
-     FragmentInfoBinding binding;
+     DialogFragmentInfoBinding binding;
      private SharedViewModel mSharedViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentInfoBinding.inflate(inflater);
+        binding = DialogFragmentInfoBinding.inflate(inflater);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mSharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        return inflater.inflate(R.layout.fragment_info, container, false);
+        return inflater.inflate(R.layout.dialog_fragment_info, container, false);
     }
 
     @Override
